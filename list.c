@@ -1,14 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct node {
-    int *value;
+    char *value;
     struct node *next;
 } node;
 
 node *head = NULL;
 
 void display() {
-
 	node *n;
 	n = head;
 	if (n == NULL) {
@@ -18,24 +19,21 @@ void display() {
 	else {
 		puts("Elements are: ");
 		while (n != NULL) {
-			printf("%d\n", n->value);
+			printf("%s\n", n->value);
 			n = n->next;
 		}
 	}
 }
 
 void add() {
+    char* value = (char*)malloc(sizeof(char)*255);
     puts("Enter the element: ");
-    int value;
-    if (scanf("%d", &value) == 0) {
-        puts("Wrong input.");
-        return 0;
-    }
+    scanf("%s", value);
+
     node *a, *b;
     a = (node*)malloc(sizeof(node));
     a->value = value;
     a->next = NULL;
-
     if (head == NULL) {
         head = a;
     }
@@ -80,6 +78,12 @@ void deleteList() {
         return;
     }
     node *curr = head;
+    if (head->next == NULL) {
+        free(curr);
+        head = NULL;
+        return;
+    }
+
     node *next;
     while (curr->next->next != NULL) {
 		next = curr->next;
@@ -92,12 +96,9 @@ void deleteList() {
 }
 
 void find() {
+    char value[255];
     puts("Enter the element: ");
-    int value;
-    if (scanf("%d", &value) == 0) {
-        puts("Wrong input.");
-        return 0;
-    }
+    scanf("%s", value);
     if (head ==  NULL){
         puts("List is empty \n");
         return;
@@ -105,7 +106,7 @@ void find() {
     node *a;
     a = head;
     int i = 1;
-    while (a->value != value) {
+    while (strcmp(a->value, value) != 0) {
         if (a->next == NULL) {
             puts("There is no such element. \n");
             return;
